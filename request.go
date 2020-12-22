@@ -3,6 +3,7 @@ package bot
 import (
 	"bytes"
 	"context"
+	"golang.org/x/net/http2"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -38,7 +39,10 @@ func RequestWithId(ctx context.Context, method, path string, body []byte, access
 }
 
 func init() {
-	httpClient = &http.Client{Timeout: 10 * time.Second}
+	httpClient = &http.Client{
+		Timeout: 10 * time.Second,
+	}
+	httpClient.Transport = &http2.Transport{}
 	httpUri = "https://mixin-api.zeromesh.net"
 	blazeUri = "mixin-blaze.zeromesh.net"
 }
